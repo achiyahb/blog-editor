@@ -1,8 +1,8 @@
 import React, {useEffect, useState} from 'react';
-import Blogs from '../Blogs'
+import Blogs from '../components/Blogs'
 import {makeStyles} from "@material-ui/styles";
-import firebaseApi from "../../firebase/firebaseApi";
-import AddBlogButton from "../AddBlogButton";
+import firebaseApi from "../firebase/firebaseApi";
+import ModeButton from "../components/ModeButton";
 
 const useStyles = makeStyles((theme) => ({
         main: {
@@ -49,7 +49,7 @@ const Main = ({changeMode}) => {
                 <Blogs/>
             </div>
             <div>
-                <AddBlogButton changeMode={changeMode}/>
+                <ModeButton changeMode={changeMode}/>
             </div>
         </div>
     );

@@ -7,12 +7,16 @@ import Button from '@material-ui/core/Button';
 import { makeStyles } from "@material-ui/styles";
 import CloudUploadIcon from '@material-ui/icons/CloudUpload';
 import SaveIcon from '@material-ui/icons/Save';
-import firebaseApi from "../../firebase/firebaseApi";
-import BackToDashboardBtn from "../BackToDashboardBtn"
+import firebaseApi from "../firebase/firebaseApi";
+import ModeButton from "../components/ModeButton"
 
 const useStyles = makeStyles((theme) => ({
         icon: {
             marginLeft: '1rem',
+        },
+        backBtn:{
+            textAlign:'left',
+            marginTop:'1rem'
         },
         button: {
             color:'white',
@@ -28,7 +32,7 @@ const useStyles = makeStyles((theme) => ({
     }
 ));
 
-const TextEditor = ({changeMode}) => {
+const TextEditor = ({changeMode,tEditorMode}) => {
     const classes = useStyles();
     const [text, setText] = useState("<p>&nbsp;</p><p>&nbsp;</p><p>&nbsp;</p><p>&nbsp;</p><p>&nbsp;</p><p>&nbsp;</p><p>&nbsp;</p><p>&nbsp;</p><p>&nbsp;</p><p>&nbsp;</p><p>.</p>")
     const [title,setTitle] = useState('')
@@ -65,7 +69,12 @@ const TextEditor = ({changeMode}) => {
     return (
         <div className="App">
             <Container maxWidth="md">
-                <BackToDashboardBtn changeMode={changeMode}/>
+                <div
+                    className={classes.backBtn}
+                >
+                    <ModeButton changeMode={changeMode} tEditorMode={tEditorMode}/>
+                </div>
+
                 <TextField
                     id="outlined-full-width"
                     label="כותרת"

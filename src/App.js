@@ -1,8 +1,8 @@
 import React, {useState} from 'react';
 import './App.css';
-import TextEditor from "./components/TextEditor/TextEditor";
-import Header from "./components/header/Header";
-import Main from "./components/Main/Main"
+import TextEditor from "./pages/TextEditor";
+import Header from "./components/Header";
+import Main from "./pages/Main"
 import {Grid} from "@material-ui/core";
 
 
@@ -25,7 +25,7 @@ function App() {
                 <Grid item>
                     {!tEditorMode?
                         <Main changeMode={changeMode}/>:
-                        <TextEditor changeMode={changeMode}/>}
+                        <TextEditor changeMode={changeMode} tEditorMode={tEditorMode}/>}
                 </Grid>
             </Grid>
         </div>
