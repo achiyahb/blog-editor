@@ -1,6 +1,7 @@
 import React from 'react';
 import {makeStyles} from "@material-ui/styles";
 import {Grid} from "@material-ui/core";
+import Blog from "./Blog";
 
 
 const useStyles = makeStyles((theme) => ({
@@ -10,17 +11,25 @@ const useStyles = makeStyles((theme) => ({
     }
 ));
 
-const Blog = () => {
+const Blogs = () => {
     const classes = useStyles();
-
+    const blogs =[1,2,3,4,5,6,7]
     return (
         <div className={classes.main}>
-            <Grid>
-                hello from blogs
+            <Grid container direction={'row'}>
+                {
+                    blogs.map((user, i) => {
+                        return (
+                            <Grid>
+                                <Blog number={user}/>
+                            </Grid>
+                        );
+                    })
+                }
             </Grid>
         </div>
     );
 }
 
-export default Blog
+export default Blogs
 

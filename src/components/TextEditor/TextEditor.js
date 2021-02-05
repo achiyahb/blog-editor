@@ -8,7 +8,7 @@ import { makeStyles } from "@material-ui/styles";
 import CloudUploadIcon from '@material-ui/icons/CloudUpload';
 import SaveIcon from '@material-ui/icons/Save';
 import firebaseApi from "../../firebase/firebaseApi";
-
+import BackToDashboardBtn from "../BackToDashboardBtn"
 
 const useStyles = makeStyles((theme) => ({
         icon: {
@@ -28,7 +28,7 @@ const useStyles = makeStyles((theme) => ({
     }
 ));
 
-const TextEditor = () => {
+const TextEditor = ({changeMode}) => {
     const classes = useStyles();
     const [text, setText] = useState("<p>&nbsp;</p><p>&nbsp;</p><p>&nbsp;</p><p>&nbsp;</p><p>&nbsp;</p><p>&nbsp;</p><p>&nbsp;</p><p>&nbsp;</p><p>&nbsp;</p><p>&nbsp;</p><p>.</p>")
     const [title,setTitle] = useState('')
@@ -61,12 +61,11 @@ const TextEditor = () => {
         }
     }
 
-    useEffect(()=>{
-        console.log('mounted')
-    },[])
+
     return (
         <div className="App">
             <Container maxWidth="md">
+                <BackToDashboardBtn changeMode={changeMode}/>
                 <TextField
                     id="outlined-full-width"
                     label="כותרת"

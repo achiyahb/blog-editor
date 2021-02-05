@@ -1,4 +1,4 @@
-import React from 'react';
+import React, {useState} from 'react';
 import './App.css';
 import TextEditor from "./components/TextEditor/TextEditor";
 import Header from "./components/header/Header";
@@ -7,7 +7,11 @@ import {Grid} from "@material-ui/core";
 
 
 function App() {
-    let start = true
+    let [tEditorMode,setTEditorMode] = useState(false)
+
+    const changeMode = ()=>{
+        setTEditorMode(!tEditorMode)
+    }
     return (
         <div className="App"
              dir="rtl"
@@ -19,7 +23,9 @@ function App() {
                     <Header/>
                 </Grid>
                 <Grid item>
-                    {start?<Main/>:<TextEditor/>}
+                    {!tEditorMode?
+                        <Main changeMode={changeMode}/>:
+                        <TextEditor changeMode={changeMode}/>}
                 </Grid>
             </Grid>
         </div>
