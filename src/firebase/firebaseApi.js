@@ -25,7 +25,7 @@ function updateData(data, path) {
 
 async function writeData(data, path) {
     let res = await db.ref(path).push(data)
-     return res
+     return res['key']
 }
 
 function deleteData(path) {

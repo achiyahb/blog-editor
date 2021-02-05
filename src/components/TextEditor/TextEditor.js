@@ -21,30 +21,44 @@ const useStyles = makeStyles((theme) => ({
         },
         buttons:{
             textAlign:'left'
+        },
+        editorStyle:{
+          marginTop:'1rem',
         }
     }
 ));
 
 const TextEditor = () => {
     const classes = useStyles();
-    const [text, setText] = useState('')
+    const [text, setText] = useState("<p>&nbsp;</p><p>&nbsp;</p><p>&nbsp;</p><p>&nbsp;</p><p>&nbsp;</p><p>&nbsp;</p><p>&nbsp;</p><p>&nbsp;</p><p>&nbsp;</p><p>&nbsp;</p><p>.</p>")
     const [title,setTitle] = useState('')
+    const [key,setKey] = useState('')
+    const [description,setDescription] = useState('')
 
     function inputTitleHandler(e){
         let titleInput = e.target.value
         setTitle(titleInput)
     }
+    function inputDescriptionHandler(e){
+        let titleDescription = e.target.value
+        setDescription(titleDescription)
+    }
 
     function handleSaveBlog(e){
         const uid = "DFGT4FGD2-"
-        const path = `users/${uid}`
+        const path = key?`users/${uid}/blogs/${key}`:`users/${uid}/blogs`
         const author = 'Achiya Haviv'
-        const blogObj ={
-            title,
-            text,
-            author
+        const blogObj ={title, text, author,description}
+        if(key){
+            firebaseApi.updateData(blogObj,path)
+        } else{
+            firebaseApi.writeData(blogObj,path)
+                .then(res=>{
+                    let blogId = res
+                    console.log(blogId)
+                    setKey(blogId)
+                })
         }
-        firebaseApi.updateData(blogObj,path)
     }
 
     useEffect(()=>{
@@ -55,7 +69,6 @@ const TextEditor = () => {
             <Container maxWidth="md">
                 <TextField
                     id="outlined-full-width"
-                    className={classes.Toolbar}
                     label="כותרת"
                     placeholder="כותרת"
                     fullWidth
@@ -67,7 +80,22 @@ const TextEditor = () => {
                     onChange={inputTitleHandler}
                     type="text"
                />
-                <div className="editor"
+                <TextField
+                    id="outlined-full-width"
+                    className={classes.Toolbar}
+                    label="תיאור"
+                    placeholder="תיאור"
+                    fullWidth
+                    margin="normal"
+                    InputLabelProps={{
+                        shrink: true,
+                    }}
+                    variant="outlined"
+                    onChange={inputDescriptionHandler}
+                    type="text"
+                />
+                <div                         className={classes.editorStyle}
+
                 >
                     <CKEditor
                         editor={ClassicEditor}
