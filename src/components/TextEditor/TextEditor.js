@@ -23,7 +23,7 @@ const useStyles = makeStyles((theme) => ({
             textAlign:'left'
         },
         editorStyle:{
-          marginTop:'1rem',
+            marginTop:'1rem',
         }
     }
 ));
@@ -79,7 +79,7 @@ const TextEditor = () => {
                     variant="outlined"
                     onChange={inputTitleHandler}
                     type="text"
-               />
+                />
                 <TextField
                     id="outlined-full-width"
                     className={classes.Toolbar}
@@ -128,7 +128,7 @@ const TextEditor = () => {
                         style={{background:'#f57d29'}}
                         className={classes.button}
                         startIcon={<CloudUploadIcon className={classes.icon}/>}
-                        >
+                    >
                         פרסם
                     </Button>
                 </div>
@@ -138,3 +138,4 @@ const TextEditor = () => {
 }
 
 export default TextEditor
+
