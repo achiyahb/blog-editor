@@ -46,7 +46,7 @@ const Main = ({changeMode}) => {
             </h2>
             <h4>לעריכה לחץ על הבלוג המבוקש</h4>
             <div>
-                <Blogs/>
+                <Blogs blogs={blogs}/>
             </div>
             <div>
                 <ModeButton changeMode={changeMode}/>

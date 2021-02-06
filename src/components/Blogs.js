@@ -11,17 +11,16 @@ const useStyles = makeStyles((theme) => ({
     }
 ));
 
-const Blogs = () => {
+const Blogs = ({blogs}) => {
     const classes = useStyles();
-    const blogs =[1,2,3,4,5,6,7]
     return (
         <div className={classes.main}>
             <Grid container direction={'row'}>
                 {
-                    blogs.map((user, i) => {
+                    blogs.map((blog, i) => {
                         return (
                             <Grid>
-                                <Blog number={user}/>
+                                <Blog blog={blog} key={i}/>
                             </Grid>
                         );
                     })
