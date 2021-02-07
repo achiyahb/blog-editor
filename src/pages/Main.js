@@ -4,10 +4,11 @@ import Posts from '../components/Posts'
 import {makeStyles} from "@material-ui/styles";
 import ModeButton from "../components/ModeButton";
 import PostsContext from "../context/PostsContext";
+import Container from "@material-ui/core/Container";
 
 const useStyles = makeStyles((theme) => ({
         main: {
-            marginTop: 0
+            marginTop: '5rem'
         }
     }
 ));
@@ -20,12 +21,14 @@ const Main = ({changeMode}) => {
 
     return (
         <div className={classes.main}>
-            <h2>
+            <h1>
                 שלום {userName}
-            </h2>
-            <h4>{!posts?"עדיין אין לך פוסטים שמורים":"לעריכה, לחץ על הבלוג המבוקש"}</h4>
+            </h1>
+            <h3>{!posts?"עדיין אין לך פוסטים שמורים":"לעריכה, לחץ על הבלוג המבוקש"}</h3>
             <div>
-                <Posts posts={posts}/>
+                <Container className={classes.main}>
+                    <Posts posts={posts}/>
+                </Container>
             </div>
             <div>
                 <ModeButton changeMode={changeMode} />

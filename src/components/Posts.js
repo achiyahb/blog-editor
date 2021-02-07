@@ -7,6 +7,9 @@ import Post from "./Post";
 const useStyles = makeStyles((theme) => ({
         main: {
             marginTop: 0
+        },
+        root:{
+            flex:1
         }
     }
 ));
@@ -15,11 +18,11 @@ const Posts = ({posts,editSpecificBlog}) => {
     const classes = useStyles();
        return (
         <div className={classes.main}>
-            <Grid container direction={'row'}>
+            <Grid container direction={'row'} className={classes.root} spacing={2}>
                 {
                     posts.map((post, i) => {
                         return (
-                            <Grid>
+                            <Grid md={4}>
                                 <Post post={post} key={i}/>
                             </Grid>
                         );
