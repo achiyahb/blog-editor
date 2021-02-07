@@ -48,19 +48,19 @@ const TextEditor = ({changeMode,tEditorMode}) => {
         setDescription(titleDescription)
     }
 
-    function handleSaveBlog(e){
+    function handleSavePost(e){
         const uid = "DFGT4FGD2-"
-        const path = key?`users/${uid}/blogs/${key}`:`users/${uid}/blogs`
+        const path = key?`users/${uid}/Posts/${key}`:`users/${uid}/Posts`
         const author = 'Achiya Haviv'
-        const blogObj ={title, text, author,description}
+        const postObj ={title, text, author,description}
         if(key){
-            firebaseApi.updateData(blogObj,path)
+            firebaseApi.updateData(postObj,path)
         } else{
-            firebaseApi.writeData(blogObj,path)
+            firebaseApi.writeData(postObj,path)
                 .then(res=>{
-                    let blogId = res
-                    console.log(blogId)
-                    setKey(blogId)
+                    let postId = res
+                    console.log(postId)
+                    setKey(postId)
                 })
         }
     }
@@ -126,7 +126,7 @@ const TextEditor = ({changeMode,tEditorMode}) => {
                         className={classes.button}
                         startIcon={<SaveIcon className={classes.icon}/>}
                         color="primary"
-                        onClick={handleSaveBlog}
+                        onClick={handleSavePost}
                     >
                         שמור
                     </Button>

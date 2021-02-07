@@ -1,4 +1,4 @@
-import React, {useState} from 'react';
+import React, {useContext, useState} from 'react';
 import Avatar from '@material-ui/core/Avatar';
 import Button from '@material-ui/core/Button';
 import CssBaseline from '@material-ui/core/CssBaseline';
@@ -12,6 +12,7 @@ import Typography from '@material-ui/core/Typography';
 import { makeStyles } from '@material-ui/core/styles';
 import Container from '@material-ui/core/Container';
 import auth from "../firebase/auth";
+import UserContext from "../context/UserContext";
 
 
 const useStyles = makeStyles((theme) => ({
@@ -39,6 +40,7 @@ export default function Register({navigate,handleSignInMode}) {
     const navigateToSignIn = function (){
         navigate()
     }
+    const changeUser = useContext(UserContext).changeUser
     const [userName,setUserName]= useState('')
     const [password,setPassword]= useState('')
     const [email,setEmail]= useState('')
@@ -60,6 +62,7 @@ export default function Register({navigate,handleSignInMode}) {
         let user =await auth.createUser(userObj)
         console.log(user)
         handleSignInMode()
+        changeUser(user)
         setBtnDisabled(false)
     }
 

@@ -6,12 +6,20 @@ import Header from "./components/Header";
 import Main from "./pages/Main"
 import Register from "./pages/Register";
 import {Grid} from "@material-ui/core";
+import { UserProvider } from "./context/UserContext";
 
 
 function App() {
     let [tEditorMode,setTEditorMode] = useState(false)
     let [userSignIn,setUserSignIn] = useState(false)
     let [needRegister,setNeedRegister] = useState(false)
+
+    const [user,setUser] = useState({})
+
+    const providerOptions = {
+        data: user,
+        changeUser: (value) => setUser(value)
+    }
 
     const changeMode = ()=>{
         setTEditorMode(!tEditorMode)
@@ -26,24 +34,25 @@ function App() {
         <div className="App"
              dir="rtl"
         >
-            <Grid
-                container direction="column"
-            >
-                <Grid item>
-                    <Header/>
+            <UserProvider value={providerOptions}>
+                <Grid
+                    container direction="column"
+                >
+                    <Grid item>
+                        <Header/>
+                    </Grid>
+                    <Grid item>
+                        {!user.email?
+                            (!needRegister ?
+                                <SignIn navigate={navigate} handleSignInMode={handleSignInMode} /> :
+                                <Register navigate={navigate} handleSignInMode={handleSignInMode}/>):
+                            !tEditorMode?
+                                <Main changeMode={changeMode}/>:
+                                <TextEditor changeMode={changeMode} tEditorMode={tEditorMode}/>
+                        }
+                    </Grid>
                 </Grid>
-                <Grid item>
-                    {!userSignIn?
-                        (needRegister ?
-                            <SignIn navigate={navigate} handleSignInMode={handleSignInMode} /> :
-                            <Register navigate={navigate} handleSignInMode={handleSignInMode}/>):
-                        !tEditorMode?
-                        <Main changeMode={changeMode}/>:
-                        <TextEditor changeMode={changeMode} tEditorMode={tEditorMode}/>
-                    }
-
-                </Grid>
-            </Grid>
+            </UserProvider>
         </div>
     );
 }

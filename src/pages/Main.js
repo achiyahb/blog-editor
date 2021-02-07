@@ -1,5 +1,6 @@
-import React, {useEffect, useState} from 'react';
-import Blogs from '../components/Blogs'
+import React, {useState,useEffect, useContext} from 'react';
+import UserContext from "../context/UserContext";
+import Posts from '../components/Posts'
 import {makeStyles} from "@material-ui/styles";
 import firebaseApi from "../firebase/firebaseApi";
 import ModeButton from "../components/ModeButton";
@@ -14,7 +15,8 @@ const useStyles = makeStyles((theme) => ({
 const Main = ({changeMode}) => {
     const classes = useStyles();
     const [userName, setUserName] = useState('')
-    const [blogs, setBlogs]= useState([])
+    const [posts, setPosts]= useState([])
+    const user = useContext(UserContext).data
     //
     //
     // function inputDescriptionHandler(e){
@@ -22,21 +24,24 @@ const Main = ({changeMode}) => {
     //     setDescription(titleDescription)
     // }
     useEffect(()=>{
-        const uid = "DFGT4FGD2-"
-        const path = `users/${uid}`
+        const uid = user.uid
+        setUserName(user.userName)
+        const path = `users/${uid}/posts`
         firebaseApi.getData(path)
             .then(res=>{
-                console.log(res)
-                let blogsObj = res.blogs
-                let userName = res.userName
-                let dbBlogs = []
-                for (const [key, blog] of Object.entries(blogsObj)) {
-                    blog.key = key
-                    dbBlogs.push(blog)
+                if(res){
+                    console.log(res)
+                    let postsObj = res
+                    let dbPosts = []
+                    for (const [key, post] of Object.entries(postsObj)) {
+                        post.key = key
+                        dbPosts.push(post)
+                    }
+                    console.log(dbPosts)
+                    setPosts(dbPosts)
                 }
-                console.log(dbBlogs)
-                setBlogs(dbBlogs)
-                setUserName(userName)
+
+
             })
     },[])
     return (
@@ -44,9 +49,9 @@ const Main = ({changeMode}) => {
             <h2>
                 שלום {userName}
             </h2>
-            <h4>לעריכה לחץ על הבלוג המבוקש</h4>
+            <h4>{posts?"עדיין אין לך פוסטים שמורים":"לעריכה, לחץ על הבלוג המבוקש"}</h4>
             <div>
-                <Blogs blogs={blogs}/>
+                <Posts posts={posts}/>
             </div>
             <div>
                 <ModeButton changeMode={changeMode}/>

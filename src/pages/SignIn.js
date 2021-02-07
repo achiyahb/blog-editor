@@ -1,5 +1,6 @@
 import CssBaseline from '@material-ui/core/CssBaseline';
-import React, {useState} from 'react';
+import React, {useState, useContext} from 'react';
+import UserContext from "../context/UserContext";
 import Avatar from '@material-ui/core/Avatar';
 import Button from '@material-ui/core/Button';
 import Container from '@material-ui/core/Container';
@@ -13,6 +14,7 @@ import LockOutlinedIcon from '@material-ui/icons/LockOutlined';
 import Typography from '@material-ui/core/Typography';
 import { makeStyles } from '@material-ui/core/styles';
 import auth from "../firebase/auth";
+
 
 // function Copyright() {
 //     return (
@@ -52,7 +54,7 @@ export default function SignIn({navigate, handleSignInMode}) {
     const navigateToRegister = function (){
         navigate()
     }
-
+    const changeUser = useContext(UserContext).changeUser
     const [password,setPassword]= useState('')
     const [email,setEmail]= useState('')
     const [btnDisabled,setBtnDisabled]= useState(false)
@@ -70,7 +72,8 @@ export default function SignIn({navigate, handleSignInMode}) {
         let user =await auth.login(userObj)
         console.log(user)
         handleSignInMode()
-        setBtnDisabled(false)
+        changeUser(user)
+        // setBtnDisabled(false)
     }
 
 

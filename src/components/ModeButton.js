@@ -37,7 +37,7 @@ const ModeButton = ({changeMode,tEditorMode}) => {
                     changeMode()
                 }}
             >
-                {tEditorMode?'חזרה לדף הראשי':'בלוג חדש'}
+                {tEditorMode?'חזרה לדף הראשי':'פוסט חדש'}
             </Button>
         </div>
     );

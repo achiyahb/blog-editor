@@ -28,7 +28,7 @@ function  login(user) {
         .signInWithEmailAndPassword(user.email, user.password)
         .then(data => {
             let userId = data.user.uid
-            firebaseApi.getData(`users/${userId}/userDetails`)
+           return firebaseApi.getData(`users/${userId}/userDetails`)
                 .then(res=>{
                     let user = res
                     user.uid = userId

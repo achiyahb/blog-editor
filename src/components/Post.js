@@ -20,12 +20,12 @@ const useStyles = makeStyles((theme) => ({
     }
 ));
 
-const Blogs = ({blog}) => {
+const Posts = ({post}) => {
     const classes = useStyles();
 
     useEffect(()=>{
         setTimeout(()=>{
-            console.log(blog)
+            console.log(post)
         },2000)
     },[])
 
@@ -39,10 +39,10 @@ const Blogs = ({blog}) => {
                 />
                 <CardContent>
                     <Typography gutterBottom variant="h5" component="h2">
-                        {blog.title}
+                        {post.title}
                     </Typography>
                     <Typography variant="body2" color="textSecondary" component="p">
-                        {blog.description}
+                        {post.description}
                     </Typography>
                 </CardContent>
             </CardActionArea>
@@ -58,5 +58,5 @@ const Blogs = ({blog}) => {
     );
 }
 
-export default Blogs
+export default Posts
 
