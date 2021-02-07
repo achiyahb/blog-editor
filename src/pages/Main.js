@@ -1,9 +1,9 @@
-import React, {useState,useEffect, useContext} from 'react';
+import React, {useContext, useState} from 'react';
 import UserContext from "../context/UserContext";
 import Posts from '../components/Posts'
 import {makeStyles} from "@material-ui/styles";
-import firebaseApi from "../firebase/firebaseApi";
 import ModeButton from "../components/ModeButton";
+import PostsContext from "../context/PostsContext";
 
 const useStyles = makeStyles((theme) => ({
         main: {
@@ -14,36 +14,10 @@ const useStyles = makeStyles((theme) => ({
 
 const Main = ({changeMode}) => {
     const classes = useStyles();
-    const [userName, setUserName] = useState('')
-    const [posts, setPosts]= useState([])
-    const user = useContext(UserContext).data
-    //
-    //
-    // function inputDescriptionHandler(e){
-    //     let titleDescription = e.target.value
-    //     setDescription(titleDescription)
-    // }
-    useEffect(()=>{
-        const uid = user.uid
-        setUserName(user.userName)
-        const path = `users/${uid}/posts`
-        firebaseApi.getData(path)
-            .then(res=>{
-                if(res){
-                    console.log(res)
-                    let postsObj = res
-                    let dbPosts = []
-                    for (const [key, post] of Object.entries(postsObj)) {
-                        post.key = key
-                        dbPosts.push(post)
-                    }
-                    console.log(dbPosts)
-                    setPosts(dbPosts)
-                }
+      const posts = useContext(PostsContext).data.posts
+    const userName = useContext(UserContext).data.userName
 
 
-            })
-    },[])
     return (
         <div className={classes.main}>
             <h2>
@@ -54,7 +28,7 @@ const Main = ({changeMode}) => {
                 <Posts posts={posts}/>
             </div>
             <div>
-                <ModeButton changeMode={changeMode}/>
+                <ModeButton changeMode={changeMode} />
             </div>
         </div>
     );

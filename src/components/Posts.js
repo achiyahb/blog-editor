@@ -11,9 +11,9 @@ const useStyles = makeStyles((theme) => ({
     }
 ));
 
-const Posts = ({posts}) => {
+const Posts = ({posts,editSpecificBlog}) => {
     const classes = useStyles();
-    return (
+       return (
         <div className={classes.main}>
             <Grid container direction={'row'}>
                 {

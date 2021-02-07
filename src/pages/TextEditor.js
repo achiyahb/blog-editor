@@ -1,4 +1,6 @@
-import React, {useEffect, useState} from 'react';
+import React, {useState, useContext, useEffect} from 'react';
+import UserContext from "../context/UserContext";
+import PostsContext from "../context/PostsContext";
 import {CKEditor} from "@ckeditor/ckeditor5-react";
 import ClassicEditor from "@ckeditor/ckeditor5-build-classic";
 import Container from "@material-ui/core/Container"
@@ -33,11 +35,15 @@ const useStyles = makeStyles((theme) => ({
 ));
 
 const TextEditor = ({changeMode,tEditorMode}) => {
+    const postToEdit = useContext(PostsContext).data.postToEdit
+    console.log('postToEdit',postToEdit)
     const classes = useStyles();
-    const [text, setText] = useState("<p>&nbsp;</p><p>&nbsp;</p><p>&nbsp;</p><p>&nbsp;</p><p>&nbsp;</p><p>&nbsp;</p><p>&nbsp;</p><p>&nbsp;</p><p>&nbsp;</p><p>&nbsp;</p><p>.</p>")
-    const [title,setTitle] = useState('')
+    const user = useContext(UserContext).data
+    const [text, setText] = useState(postToEdit.text?postToEdit.text:"<p>&nbsp;</p><p>&nbsp;</p><p>&nbsp;</p><p>&nbsp;</p><p>&nbsp;</p><p>&nbsp;</p><p>&nbsp;</p><p>&nbsp;</p><p>&nbsp;</p><p>&nbsp;</p><p>.</p>")
+    const [title,setTitle] = useState(postToEdit.title?postToEdit.title:'')
     const [key,setKey] = useState('')
     const [description,setDescription] = useState('')
+    useEffect(()=>{console.log(postToEdit)},[])
 
     function inputTitleHandler(e){
         let titleInput = e.target.value
@@ -49,9 +55,9 @@ const TextEditor = ({changeMode,tEditorMode}) => {
     }
 
     function handleSavePost(e){
-        const uid = "DFGT4FGD2-"
-        const path = key?`users/${uid}/Posts/${key}`:`users/${uid}/Posts`
-        const author = 'Achiya Haviv'
+        const uid = user.uid
+        const path = key?`users/${uid}/posts/${key}`:`users/${uid}/posts`
+        const author = user.userName
         const postObj ={title, text, author,description}
         if(key){
             firebaseApi.updateData(postObj,path)
@@ -85,9 +91,11 @@ const TextEditor = ({changeMode,tEditorMode}) => {
                         shrink: true,
                     }}
                     variant="outlined"
+                    value={postToEdit.title}
                     onChange={inputTitleHandler}
                     type="text"
-                />
+
+               />
                 <TextField
                     id="outlined-full-width"
                     className={classes.Toolbar}

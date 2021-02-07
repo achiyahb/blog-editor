@@ -1,4 +1,5 @@
-import React, {useEffect} from 'react';
+import React, {useEffect, useContext} from 'react';
+import PostsContext from "../context/PostsContext";
 import {makeStyles} from '@material-ui/core/styles';
 import Card from '@material-ui/core/Card';
 import CardActionArea from '@material-ui/core/CardActionArea';
@@ -22,6 +23,11 @@ const useStyles = makeStyles((theme) => ({
 
 const Posts = ({post}) => {
     const classes = useStyles();
+    const changePostToEdit = useContext(PostsContext).changePostToEdit
+
+    function editBlog(){
+        changePostToEdit(post)
+    }
 
     useEffect(()=>{
         setTimeout(()=>{
@@ -31,7 +37,9 @@ const Posts = ({post}) => {
 
     return (
         <Card className={classes.root}>
-            <CardActionArea>
+            <CardActionArea
+            onClick={editBlog}
+            >
                 <CardMedia
                     className={classes.media}
                     image="/static/images/cards/contemplative-reptile.jpg"

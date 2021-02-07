@@ -1,29 +1,42 @@
-import React, {useState} from 'react';
+import React, {useState,useEffect} from 'react';
 import './App.css';
-import TextEditor from "./pages/TextEditor";
+import Container from "./pages/Container";
 import SignIn from "./pages/SignIn";
 import Header from "./components/Header";
-import Main from "./pages/Main"
 import Register from "./pages/Register";
 import {Grid} from "@material-ui/core";
 import { UserProvider } from "./context/UserContext";
+import auth from "./firebase/auth";
+import Spiner from "./components/Spiner";
+
 
 
 function App() {
-    let [tEditorMode,setTEditorMode] = useState(false)
     let [userSignIn,setUserSignIn] = useState(false)
     let [needRegister,setNeedRegister] = useState(false)
-
+    const [loadData, setLoadData] = useState(false)
     const [user,setUser] = useState({})
+
+
+    useEffect(()=>{checkConnection()
+    },[])
+
+    const checkConnection= ()=>{
+    auth.checkConnection((res)=>{
+        setLoadData(true)
+        if(res){
+            setUser(res)
+        }else{
+            console.log('not connected')
+        }
+    })
+    }
 
     const providerOptions = {
         data: user,
         changeUser: (value) => setUser(value)
     }
 
-    const changeMode = ()=>{
-        setTEditorMode(!tEditorMode)
-    }
     const navigate = ()=>{
         setNeedRegister(!needRegister)
     }
@@ -42,13 +55,17 @@ function App() {
                         <Header/>
                     </Grid>
                     <Grid item>
-                        {!user.email?
-                            (!needRegister ?
-                                <SignIn navigate={navigate} handleSignInMode={handleSignInMode} /> :
-                                <Register navigate={navigate} handleSignInMode={handleSignInMode}/>):
-                            !tEditorMode?
-                                <Main changeMode={changeMode}/>:
-                                <TextEditor changeMode={changeMode} tEditorMode={tEditorMode}/>
+                        {
+                            loadData?(!user.email?
+                                (!needRegister ?
+                                    <SignIn navigate={navigate} handleSignInMode={handleSignInMode} /> :
+                                    <Register navigate={navigate} handleSignInMode={handleSignInMode}/>):
+                                <Container/>):
+                                <div
+                                    className="spinner"
+                                >
+                                    <Spiner/>
+                                </div>
                         }
                     </Grid>
                 </Grid>
