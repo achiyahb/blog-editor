@@ -4,13 +4,13 @@ import PostsContext from "../context/PostsContext";
 import {CKEditor} from "@ckeditor/ckeditor5-react";
 import ClassicEditor from "@ckeditor/ckeditor5-build-classic";
 import Container from "@material-ui/core/Container"
-import TextField from '@material-ui/core/TextField';
 import Button from '@material-ui/core/Button';
 import { makeStyles } from "@material-ui/styles";
 import CloudUploadIcon from '@material-ui/icons/CloudUpload';
 import SaveIcon from '@material-ui/icons/Save';
 import firebaseApi from "../firebase/firebaseApi";
 import ModeButton from "../components/ModeButton"
+import CustomTextField from "../components/CustomTextField";
 
 const useStyles = makeStyles((theme) => ({
         icon: {
@@ -36,14 +36,19 @@ const useStyles = makeStyles((theme) => ({
 
 const TextEditor = ({changeMode,tEditorMode}) => {
     const postToEdit = useContext(PostsContext).data.postToEdit
+    const changePostToEdit = useContext(PostsContext).changePostToEdit
     console.log('postToEdit',postToEdit)
     const classes = useStyles();
     const user = useContext(UserContext).data
     const [text, setText] = useState(postToEdit.text?postToEdit.text:"<p>&nbsp;</p><p>&nbsp;</p><p>&nbsp;</p><p>&nbsp;</p><p>&nbsp;</p><p>&nbsp;</p><p>&nbsp;</p><p>&nbsp;</p><p>&nbsp;</p><p>&nbsp;</p><p>.</p>")
-    const [title,setTitle] = useState(postToEdit.title?postToEdit.title:'')
+    const [title,setTitle] = useState('')
     const [key,setKey] = useState('')
     const [description,setDescription] = useState('')
-    useEffect(()=>{console.log(postToEdit)},[])
+
+    useEffect(()=>{
+        if(postToEdit.title){setTitle(postToEdit.title)}
+        if(postToEdit.description){setDescription(postToEdit.description)}
+    },[])
 
     function inputTitleHandler(e){
         let titleInput = e.target.value
@@ -81,34 +86,18 @@ const TextEditor = ({changeMode,tEditorMode}) => {
                     <ModeButton changeMode={changeMode} tEditorMode={tEditorMode}/>
                 </div>
 
-                <TextField
-                    id="outlined-full-width"
-                    label="כותרת"
-                    placeholder="כותרת"
-                    fullWidth
-                    margin="normal"
-                    InputLabelProps={{
-                        shrink: true,
-                    }}
-                    variant="outlined"
-                    value={postToEdit.title}
+                <CustomTextField
+                    value={title}
                     onChange={inputTitleHandler}
-                    type="text"
-
-               />
-                <TextField
-                    id="outlined-full-width"
-                    className={classes.Toolbar}
-                    label="תיאור"
-                    placeholder="תיאור"
-                    fullWidth
-                    margin="normal"
-                    InputLabelProps={{
-                        shrink: true,
-                    }}
-                    variant="outlined"
+                    placeholder={'כותרת'}
+                    label={'כותרת'}
+                />
+                <CustomTextField
+                    value={description}
                     onChange={inputDescriptionHandler}
-                    type="text"
+                    placeholder={'תיאור'}
+                    label={'תיאור'}
+                    className={classes.Toolbar}
                 />
                 <div                         className={classes.editorStyle}
 

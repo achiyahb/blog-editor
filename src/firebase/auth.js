@@ -6,7 +6,8 @@ require('firebase/auth')
 export default {
     createUser,
     login,
-    checkConnection
+    checkConnection,
+    signOut
 }
 
 function createUser(user) {
@@ -45,7 +46,7 @@ function login(user) {
 function checkConnection(res) {
     firebase.default.auth().onAuthStateChanged(function (user) {
         if (!user) {
-            return undefined
+            res(undefined)
         } else {
             let userId = user.uid
             getData(userId, (user) => {
@@ -59,4 +60,11 @@ async function getData(userId, res) {
     let user = await firebaseApi.getData(`users/${userId}/userDetails`)
     user.uid = userId
     res(user)
+}
+function signOut() {
+    firebase.default.auth().signOut().then(function() {
+
+    }).catch(function(error) {
+        // An error happened.
+    });
 }

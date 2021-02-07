@@ -132,7 +132,7 @@ export default function SignIn({navigate, handleSignInMode}) {
                     </Button>
                     <Grid container>
                         <Grid item>
-                            <Link href="" onClick={navigateToRegister} variant="body2">
+                            <Link to="/register" onClick={navigateToRegister} variant="body2">
                                 {"אין לך משתמש? הרשם עכשיו"}
                             </Link>
                         </Grid>

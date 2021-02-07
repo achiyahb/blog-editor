@@ -14,11 +14,12 @@ import Spiner from "./components/Spiner";
 function App() {
     let [userSignIn,setUserSignIn] = useState(false)
     let [needRegister,setNeedRegister] = useState(false)
-    const [loadData, setLoadData] = useState(false)
+    const [loadData, setLoadData] = useState(true)
     const [user,setUser] = useState({})
 
 
-    useEffect(()=>{checkConnection()
+    useEffect(()=>{
+        checkConnection()
     },[])
 
     const checkConnection= ()=>{

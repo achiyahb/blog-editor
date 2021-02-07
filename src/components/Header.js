@@ -1,7 +1,8 @@
 import React from "react"
-import { AppBar, Toolbar } from "@material-ui/core";
+import {AppBar, Grid, Toolbar} from "@material-ui/core";
 // import AcUnitRoundedIcon from "@material-ui/icons/AccessibilityNewSharp";
 import { makeStyles } from "@material-ui/styles";
+import {Avatar} from "@material-ui/core";
 
 const useStyles = makeStyles(() => ({
         typographyStyles: {
@@ -9,6 +10,11 @@ const useStyles = makeStyles(() => ({
         },
         Toolbar: {
             background: "primary",
+        },
+        avatar:{
+            left:'2.0rem',
+            top:'2.0rem',
+            position:'absolute'
         }
     }
 ));
@@ -32,15 +38,28 @@ const Header = ({ siteTitle }) =>{
             style={{
                 margin: `0 auto`,
                 maxWidth: 960,
-                padding: `1.45rem 1.0875rem`,
+                padding: `0.90rem 1.0875rem`,
             }}
         >
-            <h1
-
-            >
-                pro-kit blog editor
-            </h1>
-
+            <Grid container spacing={20}>
+                {/*<Grid item>*/}
+                {/*    <div>*/}
+                {/*       */}
+                {/*    </div>*/}
+                {/*</Grid>*/}
+                <Grid item>
+                    <h1>
+                        pro-kit blog editor
+                    </h1>
+                </Grid>
+                <Grid item>
+                    <div
+                        className={classes.avatar}
+                    >
+                        <Avatar  src="/static/images/avatar/1.jpg" />
+                    </div>
+                </Grid>
+            </Grid>
         </div>
             </Toolbar>
         </AppBar>
