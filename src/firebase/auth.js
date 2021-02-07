@@ -3,7 +3,8 @@ import firebaseApi from "./firebaseApi";
 require('firebase/auth')
 
 export default {
-    createUser
+    createUser,
+    login
 }
 
 function createUser(user) {
@@ -18,4 +19,23 @@ function createUser(user) {
             return user
         })
         .catch(error => (this.error = error));
+}
+
+function  login(user) {
+    return firebase
+        .default
+        .auth()
+        .signInWithEmailAndPassword(user.email, user.password)
+        .then(data => {
+            let userId = data.user.uid
+            firebaseApi.getData(`users/${userId}/userDetails`)
+                .then(res=>{
+                    let user = res
+                    user.uid = userId
+                    return user
+                })
+        })
+        .catch(error => {
+            this.error = error;
+        });
 }

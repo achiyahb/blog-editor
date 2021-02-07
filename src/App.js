@@ -19,6 +19,9 @@ function App() {
     const navigate = ()=>{
         setNeedRegister(!needRegister)
     }
+    function handleSignInMode(){
+        setUserSignIn(!userSignIn)
+    }
     return (
         <div className="App"
              dir="rtl"
@@ -32,8 +35,8 @@ function App() {
                 <Grid item>
                     {!userSignIn?
                         (needRegister ?
-                            <SignIn navigate={navigate} /> :
-                            <Register navigate={navigate}/>):
+                            <SignIn navigate={navigate} handleSignInMode={handleSignInMode} /> :
+                            <Register navigate={navigate} handleSignInMode={handleSignInMode}/>):
                         !tEditorMode?
                         <Main changeMode={changeMode}/>:
                         <TextEditor changeMode={changeMode} tEditorMode={tEditorMode}/>

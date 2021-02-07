@@ -34,7 +34,7 @@ const useStyles = makeStyles((theme) => ({
     },
 }));
 
-export default function Register({navigate}) {
+export default function Register({navigate,handleSignInMode}) {
     const classes = useStyles();
     const navigateToSignIn = function (){
         navigate()
@@ -42,6 +42,7 @@ export default function Register({navigate}) {
     const [userName,setUserName]= useState('')
     const [password,setPassword]= useState('')
     const [email,setEmail]= useState('')
+    const [btnDisabled,setBtnDisabled]= useState(false)
     function handleUserNameChanges(e){
         setUserName(e.target.value)
     }
@@ -52,11 +53,14 @@ export default function Register({navigate}) {
         setPassword(e.target.value)
     }
     async function handleSubmitBtn(){
+        setBtnDisabled(true)
         let userObj = {
             userName,email,password
         }
         let user =await auth.createUser(userObj)
         console.log(user)
+        handleSignInMode()
+        setBtnDisabled(false)
     }
 
     return (
@@ -112,6 +116,7 @@ export default function Register({navigate}) {
                     />
                     <Button
                         fullWidth
+                        disabled={btnDisabled}
                         variant="contained"
                         color="primary"
                         className={classes.submit}

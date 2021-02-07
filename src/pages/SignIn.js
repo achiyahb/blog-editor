@@ -1,5 +1,5 @@
 import CssBaseline from '@material-ui/core/CssBaseline';
-import React from 'react';
+import React, {useState} from 'react';
 import Avatar from '@material-ui/core/Avatar';
 import Button from '@material-ui/core/Button';
 import Container from '@material-ui/core/Container';
@@ -12,6 +12,7 @@ import Box from '@material-ui/core/Box';
 import LockOutlinedIcon from '@material-ui/icons/LockOutlined';
 import Typography from '@material-ui/core/Typography';
 import { makeStyles } from '@material-ui/core/styles';
+import auth from "../firebase/auth";
 
 // function Copyright() {
 //     return (
@@ -46,11 +47,34 @@ const useStyles = makeStyles((theme) => ({
     },
 }));
 
-export default function SignIn({navigate}) {
+export default function SignIn({navigate, handleSignInMode}) {
     const classes = useStyles();
     const navigateToRegister = function (){
         navigate()
     }
+
+    const [password,setPassword]= useState('')
+    const [email,setEmail]= useState('')
+    const [btnDisabled,setBtnDisabled]= useState(false)
+    function handleEmailChanges(e){
+        setEmail(e.target.value)
+    }
+    function handlePasswordChanges(e){
+        setPassword(e.target.value)
+    }
+    async function handleSubmitBtn(){
+        setBtnDisabled(true)
+        let userObj = {
+            email,password
+        }
+        let user =await auth.login(userObj)
+        console.log(user)
+        handleSignInMode()
+        setBtnDisabled(false)
+    }
+
+
+
     return (
         <Container
             component="main"
@@ -75,6 +99,7 @@ export default function SignIn({navigate}) {
                         name="email"
                         autoComplete="email"
                         autoFocus
+                        onChange={handleEmailChanges}
                     />
                     <TextField
                         variant="outlined"
@@ -86,17 +111,19 @@ export default function SignIn({navigate}) {
                         type="password"
                         id="password"
                         autoComplete="current-password"
+                        onChange={handlePasswordChanges}
                     />
                     <FormControlLabel
                         control={<Checkbox value="remember" color="primary" />}
                         label="זכור אותי"
                     />
                     <Button
-                        type="submit"
                         fullWidth
+                        disabled={btnDisabled}
                         variant="contained"
                         color="primary"
                         className={classes.submit}
+                        onClick={handleSubmitBtn}
                     >
                         התחבר
                     </Button>
