@@ -1,8 +1,8 @@
 import React from "react"
 import {AppBar, Grid, Toolbar} from "@material-ui/core";
-// import AcUnitRoundedIcon from "@material-ui/icons/AccessibilityNewSharp";
+import UserAvatar from "./UserAvatar";
 import { makeStyles } from "@material-ui/styles";
-import {Avatar} from "@material-ui/core";
+
 
 const useStyles = makeStyles(() => ({
         typographyStyles: {
@@ -14,12 +14,13 @@ const useStyles = makeStyles(() => ({
         avatar:{
             left:'2.0rem',
             top:'2.0rem',
+            cursor:'pointer',
             position:'absolute'
         }
     }
 ));
 
-const Header = ({ siteTitle }) =>{
+const Header = () =>{
     const classes = useStyles();
     return(
 
@@ -56,7 +57,7 @@ const Header = ({ siteTitle }) =>{
                     <div
                         className={classes.avatar}
                     >
-                        <Avatar  src="/static/images/avatar/1.jpg" />
+                        <UserAvatar />
                     </div>
                 </Grid>
             </Grid>

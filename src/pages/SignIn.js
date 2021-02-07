@@ -47,6 +47,9 @@ const useStyles = makeStyles((theme) => ({
     submit: {
         margin: theme.spacing(3, 0, 2),
     },
+    register:{
+        cursor:'pointer'
+    }
 }));
 
 export default function SignIn({navigate, handleSignInMode}) {
@@ -132,7 +135,9 @@ export default function SignIn({navigate, handleSignInMode}) {
                     </Button>
                     <Grid container>
                         <Grid item>
-                            <Link to="/register" onClick={navigateToRegister} variant="body2">
+                            <Link to="/register" onClick={navigateToRegister}
+                                  className={classes.register}
+                                  variant="body2">
                                 {"אין לך משתמש? הרשם עכשיו"}
                             </Link>
                         </Grid>
