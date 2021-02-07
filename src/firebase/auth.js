@@ -1,13 +1,13 @@
-import firebaseInstance from "../firebase/config"
+import * as firebase from 'firebase'
 import firebaseApi from "./firebaseApi";
+require('firebase/auth')
 
 export default {
     createUser
 }
 
 function createUser(user) {
-
-    firebaseInstance.firebase.auth()
+    return firebase.default.auth()
         .createUserWithEmailAndPassword(user.email, user.password)
         .then((res) => {
             let userId = res.user.uid

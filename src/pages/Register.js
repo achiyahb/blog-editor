@@ -1,4 +1,4 @@
-import React from 'react';
+import React, {useState} from 'react';
 import Avatar from '@material-ui/core/Avatar';
 import Button from '@material-ui/core/Button';
 import CssBaseline from '@material-ui/core/CssBaseline';
@@ -11,6 +11,7 @@ import LockOutlinedIcon from '@material-ui/icons/LockOutlined';
 import Typography from '@material-ui/core/Typography';
 import { makeStyles } from '@material-ui/core/styles';
 import Container from '@material-ui/core/Container';
+import auth from "../firebase/auth";
 
 
 const useStyles = makeStyles((theme) => ({
@@ -38,6 +39,25 @@ export default function Register({navigate}) {
     const navigateToSignIn = function (){
         navigate()
     }
+    const [userName,setUserName]= useState('')
+    const [password,setPassword]= useState('')
+    const [email,setEmail]= useState('')
+    function handleUserNameChanges(e){
+        setUserName(e.target.value)
+    }
+    function handleEmailChanges(e){
+        setEmail(e.target.value)
+    }
+    function handlePasswordChanges(e){
+        setPassword(e.target.value)
+    }
+    async function handleSubmitBtn(){
+        let userObj = {
+            userName,email,password
+        }
+        let user =await auth.createUser(userObj)
+        console.log(user)
+    }
 
     return (
         <Container component="main" maxWidth="xs">
@@ -60,6 +80,7 @@ export default function Register({navigate}) {
                         name="name"
                         autoComplete="name"
                         autoFocus
+                        onChange={handleUserNameChanges}
                     />
                     <TextField
                         variant="outlined"
@@ -71,6 +92,7 @@ export default function Register({navigate}) {
                         name="email"
                         autoComplete="email"
                         autoFocus
+                        onChange={handleEmailChanges}
                     />
                     <TextField
                         variant="outlined"
@@ -82,17 +104,18 @@ export default function Register({navigate}) {
                         type="password"
                         id="password"
                         autoComplete="current-password"
+                        onChange={handlePasswordChanges}
                     />
                     <FormControlLabel
                         control={<Checkbox value="remember" color="primary" />}
                         label="זכור אותי"
                     />
                     <Button
-                        type="submit"
                         fullWidth
                         variant="contained"
                         color="primary"
                         className={classes.submit}
+                        onClick={handleSubmitBtn}
                     >
                         הירשם
                     </Button>
