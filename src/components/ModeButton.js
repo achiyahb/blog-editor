@@ -15,7 +15,7 @@ const useStyles = makeStyles((theme) => ({
             textAlign:"left",
             margin:'2rem',
             bottom:'1rem',
-            position:'absolute',
+            position:'fixed',
             left:'1rem'
         }
     }
