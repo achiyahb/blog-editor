@@ -36,8 +36,8 @@ const Container = () => {
 
     function getPostsData(){
         const uid = user.uid
-        const path = `users/${uid}/posts`
-        firebaseApi.getData(path)
+        let collections = [{name:'users',id:uid},{name:'posts'}]
+        firebaseApi.getData(collections)
             .then(res=>{
                 if(res){
                     let postsObj = res

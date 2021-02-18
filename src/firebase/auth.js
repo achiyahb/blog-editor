@@ -31,7 +31,8 @@ function login(user) {
         .signInWithEmailAndPassword(user.email, user.password)
         .then(data => {
             let userId = data.user.uid
-            return firebaseApi.getData(`users/${userId}/userDetails`)
+            const collections = [{name:'users',id:userId},{name:'posts'}]
+            return firebaseApi.getData(collections)
                 .then(res => {
                     let user = res
                     user.uid = userId
@@ -57,7 +58,8 @@ function checkConnection(res) {
 }
 
 async function getData(userId, res) {
-    let user = await firebaseApi.getData(`users/${userId}/userDetails`)
+    let collections = [{name:'users',id:userId},{name:'userDetails',id:'t1IRqEWZAKr5aJ468H6a'}]
+    let user = await firebaseApi.getData(collections)
     user.uid = userId
     res(user)
 }

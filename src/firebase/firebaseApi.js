@@ -12,15 +12,29 @@ export default {
 
 
 // the good one
-function getData(path) {
-    return firebaseInstance.firebase.database().ref(path).once('value')
-        .then(res => {
-            return res.val();
-        })
+function getData(collections) {
+    let ref = getRef(collections)
+
+    return ref.get().then((doc) => {
+            if(doc.docs){
+                let docsArray = []
+                doc.docs.forEach(doc=>{
+                    docsArray.push(doc.data())
+                })
+                console.log(docsArray)
+                return docsArray
+            }else{
+                return  doc.data()
+            }
+
+        }).catch((error) => {
+        console.log("Error getting document:", error);
+    });
+
 }
 
 function updateData(data, collections) {
-    let ref = db
+    let ref = getRef(collections)
     collections.forEach((collection) => {
         ref = ref.collection(collection.name).doc(collection.id)
     })
@@ -31,14 +45,7 @@ function updateData(data, collections) {
 }
 
 async function writeData(data, collections) {
-    let ref = db
-    collections.forEach((collection, key) => {
-        if (key === collections.length - 1) {
-            ref = ref.collection(collection.name)
-        } else {
-            ref = ref.collection(collection.name).doc(collection.id)
-        }
-    })
+    let ref = getRef(collections)
     let res = await ref.add(data)
     return res['id']
 }
@@ -47,5 +54,15 @@ function deleteData(path) {
     firebaseInstance.firebase.database().ref(path).set(null);
 }
 
-
+function getRef(collections){
+    let ref = db
+    collections.forEach((collection) => {
+        if (!collection.id) {
+            ref = ref.collection(collection.name)
+        } else {
+            ref = ref.collection(collection.name).doc(collection.id)
+        }
+    })
+    return ref
+}
 
