@@ -60,7 +60,6 @@ export default function SignIn({navigate, handleSignInMode}) {
             email,password
         }
         let user =await auth.login(userObj)
-        console.log(user)
         handleSignInMode()
         changeUser(user)
         // setBtnDisabled(false)

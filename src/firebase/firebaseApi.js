@@ -1,7 +1,7 @@
 import firebaseInstance from './config';
 
 
-const db = firebaseInstance.firebase.database();
+const db = firebaseInstance.firebase.firestore();
 
 export default {
     writeData,
@@ -13,23 +13,38 @@ export default {
 
 // the good one
 function getData(path) {
-    return db.ref(path).once('value')
+    return firebaseInstance.firebase.database().ref(path).once('value')
         .then(res => {
             return res.val();
         })
 }
 
-function updateData(data, path) {
-    db.ref(path).set(data);
+function updateData(data, collections) {
+    let ref = db
+    collections.forEach((collection) => {
+        ref = ref.collection(collection.name).doc(collection.id)
+    })
+   return ref.set(data)
+        .then(res=>{
+            return 'success'
+        })
 }
 
-async function writeData(data, path) {
-    let res = await db.ref(path).push(data)
-     return res['key']
+async function writeData(data, collections) {
+    let ref = db
+    collections.forEach((collection, key) => {
+        if (key === collections.length - 1) {
+            ref = ref.collection(collection.name)
+        } else {
+            ref = ref.collection(collection.name).doc(collection.id)
+        }
+    })
+    let res = await ref.add(data)
+    return res['id']
 }
 
 function deleteData(path) {
-    db.ref(path).set(null);
+    firebaseInstance.firebase.database().ref(path).set(null);
 }
 
 

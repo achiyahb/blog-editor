@@ -40,7 +40,6 @@ const Container = () => {
         firebaseApi.getData(path)
             .then(res=>{
                 if(res){
-                    console.log(res)
                     let postsObj = res
                     let dbPosts = []
                     let index = 0
@@ -50,7 +49,6 @@ const Container = () => {
                         dbPosts.push(post)
                         index++
                     }
-                    console.log(dbPosts)
                     setPosts(dbPosts)
                 }
             })

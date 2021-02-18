@@ -11,6 +11,7 @@ import SaveIcon from '@material-ui/icons/Save';
 import firebaseApi from "../firebase/firebaseApi";
 import ModeButton from "../components/ModeButton"
 import CustomTextField from "../components/CustomTextField";
+import EditIcon from '@material-ui/icons/Edit';
 
 const useStyles = makeStyles((theme) => ({
         icon: {
@@ -37,17 +38,18 @@ const useStyles = makeStyles((theme) => ({
 const TextEditor = ({changeMode,tEditorMode}) => {
     const postToEdit = useContext(PostsContext).data.postToEdit
     const changePostToEdit = useContext(PostsContext).changePostToEdit
-    console.log('postToEdit',postToEdit)
     const classes = useStyles();
     const user = useContext(UserContext).data
     const [text, setText] = useState(postToEdit.text?postToEdit.text:"<p>&nbsp;</p><p>&nbsp;</p><p>&nbsp;</p><p>&nbsp;</p><p>&nbsp;</p><p>&nbsp;</p><p>&nbsp;</p><p>&nbsp;</p><p>&nbsp;</p><p>&nbsp;</p><p>.</p>")
     const [title,setTitle] = useState('')
-    const [key,setKey] = useState('')
+    const [postId,setPostId] = useState('')
     const [description,setDescription] = useState('')
+    const [canSave,setCanSave] = useState(true)
 
     useEffect(()=>{
-        if(postToEdit.title){setTitle(postToEdit.title)}
-        if(postToEdit.description){setDescription(postToEdit.description)}
+        if(postToEdit.title) setTitle(postToEdit.title)
+        if(postToEdit.description) setDescription(postToEdit.description)
+        if(postToEdit.postId) setPostId(postToEdit.postId)
     },[])
 
     function inputTitleHandler(e){
@@ -59,19 +61,22 @@ const TextEditor = ({changeMode,tEditorMode}) => {
         setDescription(titleDescription)
     }
 
-    function handleSavePost(e){
-        const uid = user.uid
-        const path = key?`users/${uid}/posts/${key}`:`users/${uid}/posts`
+    function handleSavePost(){
+        setCanSave(false)
+        const collections= [{name:'users',id:user.uid},{name:'posts',id:postId}]
         const author = user.userName
         const postObj ={title, text, author,description}
-        if(key){
-            firebaseApi.updateData(postObj,path)
+        if(postId){
+            firebaseApi.updateData(postObj,collections)
+                .then(res=>{
+                    setCanSave(true)
+                })
         } else{
-            firebaseApi.writeData(postObj,path)
+            firebaseApi.writeData(postObj,collections)
                 .then(res=>{
                     let postId = res
-                    console.log(postId)
-                    setKey(postId)
+                    setPostId(postId)
+                    setCanSave(true)
                 })
         }
     }
@@ -121,11 +126,12 @@ const TextEditor = ({changeMode,tEditorMode}) => {
                         variant="contained"
                         size="large"
                         className={classes.button}
-                        startIcon={<SaveIcon className={classes.icon}/>}
-                        color="primary"
+                        startIcon={postId?<EditIcon className={classes.icon}/>:<SaveIcon  className={classes.icon}/>}
+                        color={postId?"secondary":"primary"}
                         onClick={handleSavePost}
+                        disabled={!canSave}
                     >
-                        שמור
+                        {postId?"ערוך":"שמור"}
                     </Button>
                     <Button
                         variant="contained"

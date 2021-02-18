@@ -60,7 +60,6 @@ export default function Register({navigate,handleSignInMode}) {
             userName,email,password
         }
         let user =await auth.createUser(userObj)
-        console.log(user)
         handleSignInMode()
         changeUser(user)
         setBtnDisabled(false)

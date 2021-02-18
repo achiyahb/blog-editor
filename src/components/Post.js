@@ -30,12 +30,6 @@ const Posts = ({post}) => {
         changePostToEdit(post)
     }
 
-    useEffect(()=>{
-        setTimeout(()=>{
-            console.log(post)
-        },2000)
-    },[])
-
     return (
         <Card className={classes.root}>
             <CardActionArea
@@ -43,7 +37,8 @@ const Posts = ({post}) => {
             >
                 <CardMedia
                     className={classes.media}
-                    image="/static/images/cards/contemplative-reptile.jpg"
+                    component="img"
+                    src="https://www.webnode.com/blog/wp-content/uploads/2019/04/blog2.png"
                     title="Contemplative Reptile"
                 />
                 <CardContent>

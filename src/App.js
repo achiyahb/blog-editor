@@ -28,7 +28,7 @@ function App() {
         if(res){
             setUser(res)
         }else{
-            console.log('not connected')
+
         }
     })
     }
