@@ -7,6 +7,7 @@ import TextEditor from "./TextEditor";
 
 
 const Container = () => {
+    console.log('from container')
     let [tEditorMode,setTEditorMode] = useState(false)
     const [posts, setPosts]= useState([])
     const [postToEdit, setPostToEdit] = useState({})

@@ -42,13 +42,8 @@ const Header = () =>{
                 padding: `0.90rem 1.0875rem`,
             }}
         >
-            <Grid container spacing={20}>
-                {/*<Grid item>*/}
-                {/*    <div>*/}
-                {/*       */}
-                {/*    </div>*/}
-                {/*</Grid>*/}
-                <Grid item>
+            <Grid container>
+                              <Grid item>
                     <h1>
                         pro-kit blog editor
                     </h1>

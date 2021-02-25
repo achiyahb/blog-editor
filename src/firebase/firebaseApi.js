@@ -18,10 +18,11 @@ function getData(collections) {
     return ref.get().then((doc) => {
             if(doc.docs){
                 let docsArray = []
-                doc.docs.forEach(doc=>{
-                    docsArray.push(doc.data())
+                doc.docs.forEach((doc,key)=>{
+                    let obj = doc.data()
+                    obj.id = doc.id
+                    docsArray.push(obj)
                 })
-                console.log(docsArray)
                 return docsArray
             }else{
                 return  doc.data()
@@ -35,10 +36,7 @@ function getData(collections) {
 
 function updateData(data, collections) {
     let ref = getRef(collections)
-    collections.forEach((collection) => {
-        ref = ref.collection(collection.name).doc(collection.id)
-    })
-   return ref.set(data)
+       return ref.set(data)
         .then(res=>{
             return 'success'
         })
@@ -50,8 +48,15 @@ async function writeData(data, collections) {
     return res['id']
 }
 
-function deleteData(path) {
-    firebaseInstance.firebase.database().ref(path).set(null);
+function deleteData(collections) {
+    let ref = getRef(collections)
+    return ref.delete()
+        .then(res=>{
+            console.log("Document successfully deleted!");
+            return 'success'
+        }).catch((error) => {
+            console.error("Error removing document: ", error);
+        });
 }
 
 function getRef(collections){

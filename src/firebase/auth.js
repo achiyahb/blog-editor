@@ -17,7 +17,8 @@ function createUser(user) {
             let userId = res.user.uid
             localStorage.setItem('uid', userId)
             delete user.password
-            firebaseApi.updateData(user, `users/${userId}/userDetails`)
+            const collections = [{name:"users",id:userId},{name:'userDetails'}]
+            firebaseApi.writeData(user, collections)
             user.uid = userId
             return user
         })
@@ -58,8 +59,9 @@ function checkConnection(res) {
 }
 
 async function getData(userId, res) {
-    let collections = [{name:'users',id:userId},{name:'userDetails',id:'t1IRqEWZAKr5aJ468H6a'}]
-    let user = await firebaseApi.getData(collections)
+    let collections = [{name:'users',id:userId},{name:'userDetails'}]
+    let userData = await firebaseApi.getData(collections)
+    let user = userData[0]
     user.uid = userId
     res(user)
 }

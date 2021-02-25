@@ -1,5 +1,6 @@
 import React, {useEffect, useContext} from 'react';
 import PostsContext from "../context/PostsContext";
+import UserContext from "../context/UserContext";
 import {makeStyles} from '@material-ui/core/styles';
 import Card from '@material-ui/core/Card';
 import CardActionArea from '@material-ui/core/CardActionArea';
@@ -8,8 +9,9 @@ import CardContent from '@material-ui/core/CardContent';
 import CardMedia from '@material-ui/core/CardMedia';
 import Button from '@material-ui/core/Button';
 import Typography from '@material-ui/core/Typography';
-
-
+import DeleteIcon from '@material-ui/icons/Delete';
+import IconButton from '@material-ui/core/IconButton'
+import firebaseApi from "../firebase/firebaseApi";
 
 const useStyles = makeStyles((theme) => ({
         root: {
@@ -25,15 +27,25 @@ const useStyles = makeStyles((theme) => ({
 const Posts = ({post}) => {
     const classes = useStyles();
     const changePostToEdit = useContext(PostsContext).changePostToEdit
+    const userId = useContext(UserContext).data.uid
+    const changePosts = useContext(PostsContext).changePosts
+    const posts = useContext(PostsContext).data.posts
 
-    function editBlog(){
+    function editBlog() {
         changePostToEdit(post)
+    }
+
+     const deleteHandle = async () => {
+        const newPostsList = posts.filter((postObj)=>postObj.key !== post.key)
+        changePosts(newPostsList)
+        const collection = [{name:'users',id:userId},{name:'posts',id:post.id}]
+        await firebaseApi.deleteData(collection)
     }
 
     return (
         <Card className={classes.root}>
             <CardActionArea
-            onClick={editBlog}
+                onClick={editBlog}
             >
                 <CardMedia
                     className={classes.media}
@@ -51,12 +63,15 @@ const Posts = ({post}) => {
                 </CardContent>
             </CardActionArea>
             <CardActions>
+                <IconButton
+                    onClick={deleteHandle}
+                    aria-label="delete">
+                    <DeleteIcon />
+                </IconButton>
                 <Button size="small" color="primary">
                     Share
                 </Button>
-                <Button size="small" color="primary">
-                    Learn More
-                </Button>
+
             </CardActions>
         </Card>
     );

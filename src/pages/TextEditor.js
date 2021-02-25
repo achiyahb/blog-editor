@@ -51,6 +51,7 @@ const TextEditor = ({changeMode,tEditorMode}) => {
         if(postToEdit.description) setDescription(postToEdit.description)
         if(postToEdit.postId) setPostId(postToEdit.postId)
     },[])
+    
 
     function inputTitleHandler(e){
         let titleInput = e.target.value
