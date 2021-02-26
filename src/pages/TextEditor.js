@@ -1,8 +1,8 @@
 import React, {useState, useContext, useEffect} from 'react';
 import UserContext from "../context/UserContext";
 import PostsContext from "../context/PostsContext";
-import {CKEditor} from "@ckeditor/ckeditor5-react";
-import ClassicEditor from "@ckeditor/ckeditor5-build-classic";
+import CKEditor from 'ckeditor4-react';
+
 import Container from "@material-ui/core/Container"
 import Button from '@material-ui/core/Button';
 import { makeStyles } from "@material-ui/styles";
@@ -51,7 +51,11 @@ const TextEditor = ({changeMode,tEditorMode}) => {
         if(postToEdit.description) setDescription(postToEdit.description)
         if(postToEdit.postId) setPostId(postToEdit.postId)
     },[])
-    
+
+    function handleEditText(evt){
+        setText(evt.editor.getData())
+        console.log(text)
+    }
 
     function inputTitleHandler(e){
         let titleInput = e.target.value
@@ -109,15 +113,10 @@ const TextEditor = ({changeMode,tEditorMode}) => {
 
                 >
                     <CKEditor
-                        editor={ClassicEditor}
+
                         data={text}
-                        onChange={(event, editor) => {
-                            const data = editor.getData()
-                            setText(data)
-                        }}
-                        config={{
-                            language: 'he',
-                        }}
+                        onChange={handleEditText}
+
                     />
                 </div>
                 <div
