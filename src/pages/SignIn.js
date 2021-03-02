@@ -56,10 +56,10 @@ export default function SignIn({navigate, handleSignInMode}) {
     }
     async function handleSubmitBtn(){
         setBtnDisabled(true)
-        let userObj = {
+        const userObj = {
             email,password
         }
-        let user =await auth.login(userObj)
+        const user =await auth.login(userObj)
         handleSignInMode()
         changeUser(user)
         // setBtnDisabled(false)

@@ -38,7 +38,7 @@ const Posts = ({post}) => {
      const deleteHandle = async () => {
         const newPostsList = posts.filter((postObj)=>postObj.key !== post.key)
         changePosts(newPostsList)
-        const collection = [{name:'users',id:userId},{name:'posts',id:post.id}]
+        const collection = [{name:'posts',id:post.id}]
         await firebaseApi.deleteData(collection)
     }
 
@@ -50,7 +50,7 @@ const Posts = ({post}) => {
                 <CardMedia
                     className={classes.media}
                     component="img"
-                    src="https://www.webnode.com/blog/wp-content/uploads/2019/04/blog2.png"
+                    src={post.pictureSrc}
                     title="Contemplative Reptile"
                 />
                 <CardContent>

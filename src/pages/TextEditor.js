@@ -31,25 +31,29 @@ const useStyles = makeStyles((theme) => ({
         },
         editorStyle:{
             marginTop:'1rem',
+        },
+        img:{
+            width:'100%'
         }
     }
 ));
 
 const TextEditor = ({changeMode,tEditorMode}) => {
     const postToEdit = useContext(PostsContext).data.postToEdit
-    const changePostToEdit = useContext(PostsContext).changePostToEdit
     const classes = useStyles();
     const user = useContext(UserContext).data
     const [text, setText] = useState(postToEdit.text?postToEdit.text:"<p>&nbsp;</p><p>&nbsp;</p><p>&nbsp;</p><p>&nbsp;</p><p>&nbsp;</p><p>&nbsp;</p><p>&nbsp;</p><p>&nbsp;</p><p>&nbsp;</p><p>&nbsp;</p><p>.</p>")
     const [title,setTitle] = useState('')
     const [postId,setPostId] = useState('')
     const [description,setDescription] = useState('')
+    const [pictureSrc,setPictureSrc] = useState('')
     const [canSave,setCanSave] = useState(true)
 
     useEffect(()=>{
         if(postToEdit.title) setTitle(postToEdit.title)
         if(postToEdit.description) setDescription(postToEdit.description)
-        if(postToEdit.postId) setPostId(postToEdit.postId)
+        if(postToEdit.id) setPostId(postToEdit.id)
+        if(postToEdit.pictureSrc) setPictureSrc(postToEdit.pictureSrc)
     },[])
 
     function handleEditText(evt){
@@ -58,19 +62,23 @@ const TextEditor = ({changeMode,tEditorMode}) => {
     }
 
     function inputTitleHandler(e){
-        let titleInput = e.target.value
+        const titleInput = e.target.value
         setTitle(titleInput)
     }
     function inputDescriptionHandler(e){
-        let titleDescription = e.target.value
+        const titleDescription = e.target.value
         setDescription(titleDescription)
+    }
+    function inputPictureHandler(e){
+        const pictureSrc = e.target.value
+        setPictureSrc(pictureSrc)
     }
 
     function handleSavePost(){
         setCanSave(false)
-        const collections= [{name:'users',id:user.uid},{name:'posts',id:postId}]
+        const collections= [{name:'posts',id:postId}]
         const author = user.userName
-        const postObj ={title, text, author,description}
+        const postObj ={title, text, author,description,pictureSrc}
         if(postId){
             firebaseApi.updateData(postObj,collections)
                 .then(res=>{
@@ -79,7 +87,7 @@ const TextEditor = ({changeMode,tEditorMode}) => {
         } else{
             firebaseApi.writeData(postObj,collections)
                 .then(res=>{
-                    let postId = res
+                    const postId = res
                     setPostId(postId)
                     setCanSave(true)
                 })
@@ -108,6 +116,17 @@ const TextEditor = ({changeMode,tEditorMode}) => {
                     placeholder={'תיאור'}
                     label={'תיאור'}
                     className={classes.Toolbar}
+                />
+                <CustomTextField
+                    value={pictureSrc}
+                    onChange={inputPictureHandler}
+                    placeholder={"קישור לתמונה"}
+                    label={'תמונת שער'}
+                    className={classes.Toolbar}
+                />
+                <img
+                    className={classes.img}
+                    src={pictureSrc}
                 />
                 <div                         className={classes.editorStyle}
 

@@ -13,13 +13,13 @@ export default {
 
 // the good one
 function getData(collections) {
-    let ref = getRef(collections)
+    const ref = getRef(collections)
 
     return ref.get().then((doc) => {
             if(doc.docs){
-                let docsArray = []
+                const docsArray = []
                 doc.docs.forEach((doc,key)=>{
-                    let obj = doc.data()
+                    const obj = doc.data()
                     obj.id = doc.id
                     docsArray.push(obj)
                 })
@@ -35,7 +35,7 @@ function getData(collections) {
 }
 
 function updateData(data, collections) {
-    let ref = getRef(collections)
+    const ref = getRef(collections)
        return ref.set(data)
         .then(res=>{
             return 'success'
@@ -43,13 +43,13 @@ function updateData(data, collections) {
 }
 
 async function writeData(data, collections) {
-    let ref = getRef(collections)
-    let res = await ref.add(data)
+    const ref = getRef(collections)
+    const res = await ref.add(data)
     return res['id']
 }
 
 function deleteData(collections) {
-    let ref = getRef(collections)
+    const ref = getRef(collections)
     return ref.delete()
         .then(res=>{
             console.log("Document successfully deleted!");

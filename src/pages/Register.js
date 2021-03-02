@@ -56,10 +56,10 @@ export default function Register({navigate,handleSignInMode}) {
     }
     async function handleSubmitBtn(){
         setBtnDisabled(true)
-        let userObj = {
+        const userObj = {
             userName,email,password
         }
-        let user =await auth.createUser(userObj)
+        const user =await auth.createUser(userObj)
         handleSignInMode()
         changeUser(user)
         setBtnDisabled(false)

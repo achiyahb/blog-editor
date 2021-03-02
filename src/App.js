@@ -12,8 +12,8 @@ import Spiner from "./components/Spiner";
 
 
 function App() {
-    let [userSignIn,setUserSignIn] = useState(false)
-    let [needRegister,setNeedRegister] = useState(false)
+    const [userSignIn,setUserSignIn] = useState(false)
+    const [needRegister,setNeedRegister] = useState(false)
     const [loadData, setLoadData] = useState(true)
     const [user,setUser] = useState({})
 

@@ -7,8 +7,7 @@ import TextEditor from "./TextEditor";
 
 
 const Container = () => {
-    console.log('from container')
-    let [tEditorMode,setTEditorMode] = useState(false)
+    const [tEditorMode,setTEditorMode] = useState(false)
     const [posts, setPosts]= useState([])
     const [postToEdit, setPostToEdit] = useState({})
     const user = useContext(UserContext).data
@@ -37,12 +36,12 @@ const Container = () => {
 
     function getPostsData(){
         const uid = user.uid
-        let collections = [{name:'users',id:uid},{name:'posts'}]
+        const collections = [{name:'posts'}]
         firebaseApi.getData(collections)
             .then(res=>{
                 if(res){
-                    let postsObj = res
-                    let dbPosts = []
+                    const postsObj = res
+                    const dbPosts = []
                     let index = 0
                     for (const [key, post] of Object.entries(postsObj)) {
                         post.key = key
