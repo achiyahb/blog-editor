@@ -43,22 +43,20 @@ const TextEditor = ({changeMode,tEditorMode}) => {
     const classes = useStyles();
     const user = useContext(UserContext).data
     const [text, setText] = useState(postToEdit.text?postToEdit.text:"<p>&nbsp;</p><p>&nbsp;</p><p>&nbsp;</p><p>&nbsp;</p><p>&nbsp;</p><p>&nbsp;</p><p>&nbsp;</p><p>&nbsp;</p><p>&nbsp;</p><p>&nbsp;</p><p>.</p>")
-    const [title,setTitle] = useState('')
-    const [postId,setPostId] = useState('')
-    const [description,setDescription] = useState('')
-    const [pictureSrc,setPictureSrc] = useState('')
+    const [title,setTitle] = useState(postToEdit.title ? postToEdit.title : '')
+    const [postId,setPostId] = useState(postToEdit.id ? postToEdit.id : '')
+    const [description,setDescription] = useState(postToEdit.description ? postToEdit.description : '')
+    const [link,setLink] = useState(postToEdit.link ? postToEdit.link : '')
+    const [pictureSrc,setPictureSrc] = useState(postToEdit.pictureSrc ? postToEdit.pictureSrc : '')
     const [canSave,setCanSave] = useState(true)
 
-    useEffect(()=>{
-        if(postToEdit.title) setTitle(postToEdit.title)
-        if(postToEdit.description) setDescription(postToEdit.description)
-        if(postToEdit.id) setPostId(postToEdit.id)
-        if(postToEdit.pictureSrc) setPictureSrc(postToEdit.pictureSrc)
-    },[])
 
     function handleEditText(evt){
         setText(evt.editor.getData())
-        console.log(text)
+    }
+    function inputLinkHandler(e){
+        const linkInput = e.target.value
+        setLink(linkInput)
     }
 
     function inputTitleHandler(e){
@@ -78,7 +76,7 @@ const TextEditor = ({changeMode,tEditorMode}) => {
         setCanSave(false)
         const collections= [{name:'posts',id:postId}]
         const author = user.userName
-        const postObj ={title, text, author,description,pictureSrc}
+        const postObj ={title, text, author,description,pictureSrc,link}
         if(postId){
             firebaseApi.updateData(postObj,collections)
                 .then(res=>{
@@ -115,6 +113,13 @@ const TextEditor = ({changeMode,tEditorMode}) => {
                     onChange={inputDescriptionHandler}
                     placeholder={'תיאור'}
                     label={'תיאור'}
+                    className={classes.Toolbar}
+                />
+                <CustomTextField
+                    value={link}
+                    onChange={inputLinkHandler}
+                    placeholder={'קישור לפוסט'}
+                    label={'קישור לפוסט'}
                     className={classes.Toolbar}
                 />
                 <CustomTextField
