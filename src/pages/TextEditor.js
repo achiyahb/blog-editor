@@ -42,8 +42,9 @@ const TextEditor = ({changeMode,tEditorMode}) => {
     const postToEdit = useContext(PostsContext).data.postToEdit
     const classes = useStyles();
     const user = useContext(UserContext).data
-    const [text, setText] = useState(postToEdit.text?postToEdit.text:"<p>&nbsp;</p><p>&nbsp;</p><p>&nbsp;</p><p>&nbsp;</p><p>&nbsp;</p><p>&nbsp;</p><p>&nbsp;</p><p>&nbsp;</p><p>&nbsp;</p><p>&nbsp;</p><p>.</p>")
+    const [publish,setPublish] = useState(postToEdit.publish ? postToEdit.publish : false)
     const [title,setTitle] = useState(postToEdit.title ? postToEdit.title : '')
+    const [text, setText] = useState(postToEdit.text ? postToEdit.text : '')
     const [postId,setPostId] = useState(postToEdit.id ? postToEdit.id : '')
     const [description,setDescription] = useState(postToEdit.description ? postToEdit.description : '')
     const [link,setLink] = useState(postToEdit.link ? postToEdit.link : '')
@@ -57,6 +58,7 @@ const TextEditor = ({changeMode,tEditorMode}) => {
     function inputLinkHandler(e){
         const linkInput = e.target.value
         setLink(linkInput)
+        setPostId(linkInput)
     }
 
     function inputTitleHandler(e){
@@ -72,11 +74,17 @@ const TextEditor = ({changeMode,tEditorMode}) => {
         setPictureSrc(pictureSrc)
     }
 
+    function handlePublishPost(){
+        const needToPublish = publish === false
+        setPublish(needToPublish)
+    }
+
+
     function handleSavePost(){
         setCanSave(false)
         const collections= [{name:'posts',id:postId}]
         const author = user.userName
-        const postObj ={title, text, author,description,pictureSrc,link}
+        const postObj ={title, text, author, description, pictureSrc, link, publish}
         if(postId){
             firebaseApi.updateData(postObj,collections)
                 .then(res=>{
@@ -137,7 +145,6 @@ const TextEditor = ({changeMode,tEditorMode}) => {
 
                 >
                     <CKEditor
-
                         data={text}
                         onChange={handleEditText}
 
@@ -160,11 +167,12 @@ const TextEditor = ({changeMode,tEditorMode}) => {
                     <Button
                         variant="contained"
                         size="large"
-                        style={{background:'#f57d29'}}
+                        style={{background:publish? '' : '#f57d29'}}
                         className={classes.button}
                         startIcon={<CloudUploadIcon className={classes.icon}/>}
+                        onClick={handlePublishPost}
                     >
-                        פרסם
+                        {publish ? 'עצור פרסום' : 'פרסום'}
                     </Button>
                 </div>
             </Container>
