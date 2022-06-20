@@ -1,7 +1,7 @@
 import firebaseInstance from './config';
+import 'firebase/firestore'
 
-
-const db = firebaseInstance.firebase.firestore();
+const db = firebaseInstance.firestore();
 
 export default {
     writeData,
@@ -11,7 +11,6 @@ export default {
 }
 
 
-// the good one
 function getData(collections) {
     const ref = getRef(collections)
 
